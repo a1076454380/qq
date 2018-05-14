@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/av-min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/realtime.browser.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/typed-messages.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<div id="head">
+				<span></span>
+				<div>
+					董小礼
+				</div>
+				<span></span>
+			</div>
+			<div id="main">
+				<div id="main-inner">
+					<div class="other inform">
+						<img src="img/avatar.jpg" class="avatar" />
+						<div class="text">
+							我是董小礼
+						</div>
+					</div>
+					<div class="us inform">
+						<div class="text">
+							我是陆小宝
+						</div>
+						<img src="img/avatar.jpg" class="avatar" />
+					</div>
+				</div>
+			</div>
+			<div id="footnav">
+				<img src="img/photo.png" data-num='-2' />
+				<img src="img/audio.png" data-num='-3' />
+				<img src="img/video.png" data-num='-4' />
+				<img src="img/word.png" data-num='-5' />
+				<img src="img/adress.png" data-num='-6' />
+			</div>
+			<div id="foot">
+				<!---1-->
+				<input type="text" id="mytext" placeholder="请输入发送内容..." />
+				<!---2-->
+				<input type="file" id="photo" accept="image/*" placeholder="请选择要上传的照片">
+				<input type="file" id="audio" accept="audio/*" placeholder="请选择要上传的音频">
+				<input type="file" id="video" accept="video/*" placeholder="请选择要上传的视频">
+				<input type="file" id="word" placeholder="请选择要上传的文件">
+				<div id="submit">
+					发送
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			// 初始化存储 SDK
+			AV.init({
+				appId: 'R7N9qRELoUVPza9aIAvTMGvz-gzGzoHsz',
+				appKey: 'bGJUP0FyQdFzRN3YrObzbxbE',
+			});
+			var Realtime = AV.Realtime;
+			var TextMessage = AV.TextMessage;
+			var realtime = new Realtime({
+				appId: 'R7N9qRELoUVPza9aIAvTMGvz-gzGzoHsz',
+				appKey: 'bGJUP0FyQdFzRN3YrObzbxbE',
+				region: 'cn', // 美国节点为 "us"
+				plugins: [AV.TypedMessagesPlugin]
+			});
+//			音频的播放与暂停
+			$('#main-inner').on('click','.play',function(){
+				$(this).hide()
+				$(this).parent().children('.stop').show()
+				$(this).parent().children('audio')[0].play()
+				$(this).parent().children('p').html('点击暂停')
+			})
+			$('#main-inner').on('click','.stop',function(){
+				$(this).hide()
+				$(this).parent().children('.play').show()
+				$(this).parent().children('audio')[0].pause()
+				$(this).parent().children('p').html('点击播放')
+			})
+			var mytype = -1
+			//		修改消息类型-1文字，-2图片，-6文档,-3音频，-4视频
+			$('#footnav img').click(function() {
+				mytype = $(this).attr('data-num')
+				var index = Math.abs(mytype) - 1
+				$('#foot input').hide()
+				$('#foot input').eq(index).show()
+			})
+			//		发送消息、
+			$('#submit').click(function() {
+				realtime.createIMClient('17321713550').then(function(Jerry) {
+					// 创建与Jerry之间的对话
+					return Jerry.createConversation({
+						members: ['15252163775'],
+						name: '17321713550 & 15252163775',
+					});
+				}).then(function(conversation) {
+					if(mytype == -1) {
+						//				文字消息
+						return conversation.send(new AV.TextMessage($('#mytext').val()))
+					} else if(mytype == -2) {
+						//				图片消息
+						var fileUploadControl = $('#photo')[0];
+						var file = new AV.File('avatar.jpg', fileUploadControl.files[0]);
+						file.save().then(function() {
+							var message = new AV.ImageMessage(file)
+							return conversation.send(message);
+						}).then(function(message) {
+							$('#main-inner').append(`
+								<div class="us inform">
+									<div class="text">
+										<img src="${message._lcfile.url}" class="textimg" />	
+									</div>
+									<img src="img/avatar.jpg" class="avatar" />
+								</div>
+							`)
+						}).catch(console.error.bind(console));
+					} else if(mytype == -5) {
+						//				文档消息
+						var fileUploadControl = $('#word')[0];
+						var file = new AV.File('avatar.dox', fileUploadControl.files[0]);
+						file.save().then(function() {
+							var message = new AV.FileMessage(file)
+							return conversation.send(message);
+						}).then(function(message) {
+							$('#main-inner').append(`
+							<div class="us inform">
+								<div class="text">
+									<a href="${message._lcfile.url}">您向对方发送了一个文件,点击下载!</a>
+								</div>
+								<img src="img/avatar.jpg" class="avatar" />
+							</div>
+						`)
+						}).catch(console.error.bind(console));
+					} else if(mytype == -3) {
+						//				音频消息
+						var fileUploadControl = $('#audio')[0];
+						var file = new AV.File('avatar.mp3', fileUploadControl.files[0]);
+						file.save().then(function() {
+							var message = new AV.AudioMessage(file)
+							return conversation.send(message);
+						}).then(function(message) {
+							$('#main-inner').append(`
+								<div class="us inform">
+									<div class="text audio">
+										<img src="img/play.png" class="play" />
+										<img src="img/stop.png" class="stop" />
+										<p>点击播放</p>
+										<audio id="mp3Btn">
+											<source src="${message._lcfile.url}" type="audio/mpeg" />
+										</audio>
+									</div>
+									<img src="img/avatar.jpg" class="avatar" />
+								</div>
+							`)
+						}).catch(console.error.bind(console));
+					} else if(mytype == -4) {
+						//				视频消息
+						var fileUploadControl = $('#video')[0];
+						var file = new AV.File('avatar.mp4', fileUploadControl.files[0]);
+						file.save().then(function() {
+							var message = new AV.VideoMessage(file)
+							return conversation.send(message);
+						}).then(function(message) {
+							$('#main-inner').append(`
+								<div class="us inform">
+									<div class="text audio">
+										<video src="${message._lcfile.url}" controls="">
+										</video>
+									</div>
+									<img src="img/avatar.jpg" class="avatar" />
+								</div>
+							`)
+						}).catch(console.error.bind(console));
+					} else if(mytype == -6) {
+						//				位置信息
+						var location = new AV.GeoPoint(31.3753285, 120.9664658);
+						var message = new AV.LocationMessage(location);
+						conversation.send(message).then(function() {
+							console.log('发送成功');
+						}).catch(console.error.bind(console));
+					}
+				}).then(function(message) {
+					if(mytype == -1){
+						$('#mytext').val('')
+						$('#main-inner').append(`
+							<div class="us inform">
+								<div class="text">
+									${message.text}
+								</div>
+								<img src="img/avatar.jpg" class="avatar" />
+							</div>
+						`)
+					}
+				}).catch(console.error);
+			})
+			// 接收消息
+			realtime.createIMClient('17321713550').then(function(res) {
+				res.on('message', function(message, conversation) {
+					if(message.content._lctype == -1) {
+						//					文字
+						$('#main-inner').append(`
+						<div class="other inform">
+							<img src="img/avatar.jpg" class="avatar" />
+							<div class="text">
+								${message.text}
+							</div>
+						</div>
+					`)
+					} else if(message.content._lctype == -2) {
+						//					图片
+						$('#main-inner').append(`
+						<div class="other inform">
+							<img src="img/avatar.jpg" class="avatar" />
+							<div class="text">
+								<img src="${message._lcfile.url}" class="textimg" />
+							</div>
+						</div>
+					`)
+					} else if(message.content._lctype == -6) {
+						//					文档
+						$('#main-inner').append(`
+						<div class="other inform">
+							<img src="img/avatar.jpg" class="avatar" />
+							<div class="text">
+								<a href="${message._lcfile.url}">对方向您发送了一个文件,点击下载!</a>
+							</div>
+						</div>
+					`)
+					} else if(message.content._lctype == -3) {
+						//					音频
+						$('#main-inner').append(`
+						<div class="other inform">
+							<img src="img/avatar.jpg" class="avatar" />
+							<div class="text audio">
+								<img src="img/play.png" class="play" />
+								<img src="img/stop.png" class="stop" />
+								<p>点击播放</p>
+								<audio id="mp3Btn">
+									<source src="${message._lcfile.url}" type="audio/mpeg" />
+								</audio>
+							</div>
+						</div>
+					`)
+					} else if(message.content._lctype == -4) {
+						//					音频
+						$('#main-inner').append(`
+						<div class="other inform">
+							<img src="img/avatar.jpg" class="avatar" />
+							<div class="text audio">
+								<video src="${message._lcfile.url}" controls="">
+								</video>
+							</div>
+						</div>
+					`)
+					}
+
+				});
+			}).catch(console.error);
+			//		//		群聊
+			//		realtime.createIMClient('Jerry').then(function(Jerry) {
+			//			// 创建与 Jerry,Bob,Harry,William 之间的对话
+			//			return Jerry.createConversation({
+			//				members: ['Tom', 'Bob', 'Harry', 'William'],
+			//				name: 'Tom & Jerry & friends',
+			//			})
+			//		}).then(function(conversation) {
+			//			// 发送消息
+			//			return conversation.send(new AV.TextMessage('你们在哪儿？'));
+			//		}).then(function(message) {
+			//			console.log('发送成功！');
+			//		}).catch(console.error);
+		})
+	</script>
+
+</html>

@@ -1,0 +1,119 @@
+*{margin: 0;padding: 0;}
+#wrapper,html,body{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	font-size: .25rem;
+	overflow: hidden;
+}
+#head{
+	height: .7rem;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	background: #696969;
+	color: white;
+}
+#head div{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+}
+#foot{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: .7rem;
+	display: flex;
+	align-items: center;
+	background: #696969;
+}
+#foot input{
+	border: 1px solid gainsboro;
+	border-radius: .1rem;
+	flex: 1;
+	height: .5rem;
+	margin: 0 .1rem;
+	text-indent: .1rem;
+	display: none;
+	color: white;
+}
+#foot input:nth-of-type(1){
+	display: block;
+	color: #696969;
+}
+#foot #submit{
+	width: .8rem;
+	height: .5rem;
+	border-radius: .1rem;
+	color: white;
+	background: #696969;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#main{
+	width: 100%;
+	height: calc(100% - 2.1rem);
+	overflow: hidden;
+	background: url(../img/back.jpg) no-repeat;
+	background-size:100% 100% ;
+	margin-top: .7rem;
+}
+#main-inner{
+	width: 100%;
+	height: 100%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+.inform{
+	margin: .2rem ;
+	display: flex;
+}
+.inform .avatar{
+	width: .5rem;
+	height: .5rem;
+	border-radius: 50%;
+}
+.textimg{
+	width: 3rem;
+}
+.inform .text{
+	background: white;
+	border-radius:.1rem ;
+	margin: .1rem;
+	padding: .1rem .2rem;
+}
+.us{
+	display: flex;
+	justify-content: flex-end;
+}
+#footnav{
+	position: absolute;
+	bottom: .7rem;
+	left: 0;
+	width: 100%;
+	height: .7rem;
+	display: flex;
+	align-items: center;
+	background: #696969;
+}
+#footnav img{
+	height: .3rem;
+	margin: 0 .3rem;
+}
+.play,.stop{width: 1rem;margin: .1rem auto;display: block;}
+#mp3Btn,.stop{
+	display: none;
+}
+.inform .audio{
+	color: #696969;
+}
+video{
+	width: 4rem;
+}
