@@ -28,18 +28,7 @@
 			</div>
 			<div id="main">
 				<div id="main-inner">
-					<div class="other inform">
-						<img src="img/avatar.jpg" class="avatar" />
-						<div class="text">
-							我是董小礼
-						</div>
-					</div>
-					<div class="us inform">
-						<div class="text">
-							我是陆小宝
-						</div>
-						<img src="img/avatar.jpg" class="avatar" />
-					</div>
+					
 				</div>
 			</div>
 			<div id="footnav">
@@ -67,8 +56,67 @@
 		$(function() {
 			var us=localStorage.getItem('us')
 			var other=localStorage.getItem('other')
-			$('.us .text').html('我是'+us)
-			$('.other .text').html('我是'+other)
+			var userdata=JSON.parse(localStorage.getItem('userdata'))
+			var index=0
+			console.log(JSON.parse(localStorage.getItem('userdata')))
+			for(var i=0;i<userdata.friend.length;i++){
+				if(userdata.friend[i].id==other){
+					index=i
+					break
+				}
+			}
+			function pushrecord(type,target,text){
+				userdata.friend[index].history.push({
+					'type':type,
+					'target':target,
+					'text':text
+				})
+				localStorage.setItem('userdata',JSON.stringify(userdata))
+			}
+			if(userdata.friend[index].history.length==0){
+				$('#main-inner').append(`
+						<div class="other inform">
+							<img src="img/avatar.jpg" class="avatar" />
+							<div class="text">
+								我是${other}
+							</div>
+						</div>
+					`)
+				$('#main-inner').append(`
+						<div class="us inform">
+							<div class="text">
+								我是${us}
+							</div>
+							<img src="img/avatar.jpg" class="avatar" />
+						</div>
+					`)
+				pushrecord('-1','other','我是'+other)
+				pushrecord('-1','us','我是'+us)
+			}else{
+				for(var i=0;i<userdata.friend[index].history.length;i++){
+					if(userdata.friend[index].history[i].target=='other'){
+						console.log(userdata.friend[index].history[i].text)
+						$('#main-inner').append(`
+							<div class="other inform">
+								<img src="img/avatar.jpg" class="avatar" />
+								<div class="text">
+									${userdata.friend[index].history[i].text}
+								</div>
+							</div>
+						`)
+					}else{
+						$('#main-inner').append(`
+							<div class="us inform">
+								<div class="text">
+									${userdata.friend[index].history[i].text}
+								</div>
+								<img src="img/avatar.jpg" class="avatar" />
+							</div>
+						`)
+					}
+					
+				}
+			}
 			// 初始化存储 SDK
 			AV.init({
 				appId: 'R7N9qRELoUVPza9aIAvTMGvz-gzGzoHsz',
@@ -123,6 +171,7 @@
 							var message = new AV.ImageMessage(file)
 							return conversation.send(message);
 						}).then(function(message) {
+							pushrecord(mytype,'us',message._lcfile.url)
 							$('#main-inner').append(`
 								<div class="us inform">
 									<div class="text">
@@ -140,6 +189,7 @@
 							var message = new AV.FileMessage(file)
 							return conversation.send(message);
 						}).then(function(message) {
+							pushrecord(mytype,'us',message._lcfile.url)
 							$('#main-inner').append(`
 							<div class="us inform">
 								<div class="text">
@@ -157,6 +207,7 @@
 							var message = new AV.AudioMessage(file)
 							return conversation.send(message);
 						}).then(function(message) {
+							pushrecord(mytype,'us',message._lcfile.url)
 							$('#main-inner').append(`
 								<div class="us inform">
 									<div class="text audio">
@@ -179,6 +230,7 @@
 							var message = new AV.VideoMessage(file)
 							return conversation.send(message);
 						}).then(function(message) {
+							pushrecord(mytype,'us',message._lcfile.url)
 							$('#main-inner').append(`
 								<div class="us inform">
 									<div class="text audio">
@@ -200,6 +252,7 @@
 				}).then(function(message) {
 					if(mytype == -1){
 						$('#mytext').val('')
+						pushrecord(''+mytype+'','us',message.text)
 						$('#main-inner').append(`
 							<div class="us inform">
 								<div class="text">
@@ -209,6 +262,7 @@
 							</div>
 						`)
 					}
+					
 				}).catch(console.error);
 			})
 			// 接收消息

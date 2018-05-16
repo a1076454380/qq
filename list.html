@@ -22,24 +22,37 @@
 				<p class="nofriend">
 					暂无好友，请添加左上角加好添加好友！
 				</p>
-				<!--<div class="group" data-id="15252163775">
-					<img src="img/avatar.jpg" class="avatar">
-					<div class="group-text">
-						<div class="name">
-							董小礼
-						</div>
-						<div class="text">
-							吃饭没?
-						</div>
-					</div>
-				</div>-->
+				<div id="group"></div>
 			</div>
 		</div>
 	</body>
 	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		$(function(){
-			console.log(JSON.parse(localStorage.getItem('userdata')))
+			var userdata=JSON.parse(localStorage.getItem('userdata'))
+			if(userdata==null){
+				window.location.href='login.html'
+			}
+			if(userdata.friend.length==0){
+				$('#group').hide()
+			}else{
+				$('.nofriend').hide()
+				for(var i=0;i<userdata.friend.length;i++){
+					$('#group').append(`
+						<div class="group" data-id=""+${userdata.friend[i].id}+"">
+							<img src="img/avatar.jpg" class="avatar">
+							<div class="group-text">
+								<div class="name">
+									${userdata.friend[i].id}
+								</div>
+								<div class="text">
+									${userdata.friend[i].history[userdata.friend[i].history.length.text]}
+								</div>
+							</div>
+						</div>
+					`)
+				}
+			}
 			$('.add').click(function(){
 				window.location.href='add.html'
 			})

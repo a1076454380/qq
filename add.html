@@ -34,7 +34,8 @@
 				if($('input').val()!=''){
 					var data={
 						id:$('input').val(),
-						history:[]
+						history:[],
+						name:''
 					}
 					userdata.friend.push(data)
 					localStorage.setItem('other',$('input').val())
