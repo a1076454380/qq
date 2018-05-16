@@ -36,18 +36,35 @@
 			if(userdata.friend.length==0){
 				$('#group').hide()
 			}else{
+				var text;
 				$('.nofriend').hide()
 				for(var i=0;i<userdata.friend.length;i++){
+					if(userdata.friend[i].history[userdata.friend[i].history.length-1].type==-1){
+						text=userdata.friend[i].history[userdata.friend[i].history.length-1].text
+					}else if(userdata.friend[i].history[userdata.friend[i].history.length-1].type==-2){
+						text='[图片]'
+					}else if(userdata.friend[i].history[userdata.friend[i].history.length-1].type==-3){
+						text='[音频]'
+					}else if(userdata.friend[i].history[userdata.friend[i].history.length-1].type==-4){
+						text='[视频]'
+					}else if(userdata.friend[i].history[userdata.friend[i].history.length-1].type==-5){
+						text='[文档]'
+					}else{
+						text='[未知信息]'
+					}
 					$('#group').append(`
 						<div class="group" data-id=""+${userdata.friend[i].id}+"">
 							<img src="img/avatar.jpg" class="avatar">
 							<div class="group-text">
 								<div class="name">
-									${userdata.friend[i].id}
+									${userdata.friend[i].name}
 								</div>
 								<div class="text">
-									${userdata.friend[i].history[userdata.friend[i].history.length.text]}
+									${text}
 								</div>
+							</div>
+							<div class="group-text">
+								<img src="img/detelete.png" class="delete">
 							</div>
 						</div>
 					`)
@@ -55,6 +72,9 @@
 			}
 			$('.add').click(function(){
 				window.location.href='add.html'
+			})
+			$('.editor').click(function(){
+				
 			})
 		})
 	</script>

@@ -19,7 +19,8 @@
 				<span class="editor"></span>
 			</div>
 			<div id="main">
-				<input type="number" placeholder="请输入对方的纯数字ID，推荐使用手机号！" required=""/>
+				<input type="number" placeholder="请输入对方的纯数字ID，推荐使用手机号！" id="phone"/>
+				<input type="text" placeholder="请输入给对方的备注" id="name"/>
 				<div class="submit">
 					发起会话
 				</div>
@@ -33,14 +34,16 @@
 			$('.submit').click(function(){
 				if($('input').val()!=''){
 					var data={
-						id:$('input').val(),
+						id:$('#phone').val(),
 						history:[],
-						name:''
+						name:$('#name').val()
 					}
 					userdata.friend.push(data)
-					localStorage.setItem('other',$('input').val())
+					localStorage.setItem('other',$('#phone').val())
 					localStorage.setItem('userdata',JSON.stringify(userdata))
 					window.location.href='index.html'
+				}else{
+					alert('ID和昵称不能为空')
 				}
 			})
 		})

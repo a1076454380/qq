@@ -141,7 +141,7 @@ video{
 	border-radius: 50%;
 }
 .list .group-text{
-	margin-left: .2rem;
+	margin-left: .1rem;
 	height: .7rem;
 	display: flex;
 	flex-direction: column;
@@ -150,8 +150,9 @@ video{
 .login #main{
 	height: calc(100% - .7rem)!important;
 }
-.login input{width: 6rem;border: 1px solid gainsboro;border-radius: .1rem;display: block;margin: 4rem auto .4rem;height: .7rem;text-indent: .1rem;}
+.login input{width: 6rem;border: 1px solid gainsboro;border-radius: .1rem;display: block;margin: .4rem auto .4rem;height: .7rem;text-indent: .1rem;}
 .login .submit{width: 6rem;height: .7rem;border-radius: .1rem;background: #696969;color: white;display: flex;align-items: center;justify-content: center;margin: 0 auto;}
+.login #phone{margin-top: 4rem;}
 .list .nofriend{margin: 1rem auto;text-align: center;color: white;font-size: .3rem;font-weight: 700;}
 .index .input-group{display: none;}
 .index .input-group:nth-of-type(0){
@@ -162,3 +163,5 @@ video{
 .index .input-group label{    border: 1px solid gainsboro;
     border-radius: .1rem;    height: .5rem;
     margin: .1rem;color: white;display: block;display: flex;align-items: center;justify-content: center;}
+.text{font-size: .15rem;color: gray;}
+.name{font-size: .25rem;font-weight: 600;}
