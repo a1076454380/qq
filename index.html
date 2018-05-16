@@ -14,7 +14,7 @@
 	</head>
 
 	<body>
-		<div id="wrapper">
+		<div id="wrapper" class="index">
 			<div id="head">
 				<span>
 					<a href="list.html">
@@ -32,6 +32,7 @@
 				</div>
 			</div>
 			<div id="footnav">
+				<img src="img/text.png" data-num='-1' />
 				<img src="img/photo.png" data-num='-2' />
 				<img src="img/audio.png" data-num='-3' />
 				<img src="img/video.png" data-num='-4' />
@@ -40,12 +41,22 @@
 			</div>
 			<div id="foot">
 				<!---1-->
-				<input type="text" id="mytext" placeholder="请输入发送内容..." />
+				<input type="text" id="mytext" placeholder="请输入发送内容..." class="group input-group"/>
 				<!---2-->
-				<input type="file" id="photo" accept="image/*" placeholder="请选择要上传的照片">
-				<input type="file" id="audio" accept="audio/*" placeholder="请选择要上传的音频">
-				<input type="file" id="video" accept="video/*" placeholder="请选择要上传的视频">
-				<input type="file" id="word" placeholder="请选择要上传的文件">
+				<div class="input-group">
+					<label for="photo">发送照片</label>
+					<input type="file" id="photo" accept="image/*" placeholder="请选择要上传的照片">
+				</div>
+				<div class="input-group">
+					<label for="audio">发送音频</label>
+					<input type="file" id="audio" accept="audio/*" placeholder="请选择要上传的音频">
+				</div><div class="input-group">
+					<label for="video">发送视频</label>
+					<input type="file" id="video" accept="video/*" placeholder="请选择要上传的视频">
+				</div><div class="input-group">
+					<label for="word">发送文件</label>
+					<input type="file" id="word" placeholder="请选择要上传的文件">
+				</div>
 				<div id="submit">
 					发送
 				</div>
@@ -59,12 +70,14 @@
 			var userdata=JSON.parse(localStorage.getItem('userdata'))
 			var index=0
 			console.log(JSON.parse(localStorage.getItem('userdata')))
+//			判断当前用户身份
 			for(var i=0;i<userdata.friend.length;i++){
 				if(userdata.friend[i].id==other){
 					index=i
 					break
 				}
 			}
+//			添加聊天记录
 			function pushrecord(type,target,text){
 				userdata.friend[index].history.push({
 					'type':type,
@@ -73,7 +86,9 @@
 				})
 				localStorage.setItem('userdata',JSON.stringify(userdata))
 			}
+//			获取聊天记录
 			if(userdata.friend[index].history.length==0){
+//				没有聊天记录,添加问候语
 				$('#main-inner').append(`
 						<div class="other inform">
 							<img src="img/avatar.jpg" class="avatar" />
@@ -93,6 +108,7 @@
 				pushrecord('-1','other','我是'+other)
 				pushrecord('-1','us','我是'+us)
 			}else{
+//				渲染聊天记录
 				for(var i=0;i<userdata.friend[index].history.length;i++){
 					if(userdata.friend[index].history[i].target=='other'){
 						console.log(userdata.friend[index].history[i].text)
@@ -148,8 +164,8 @@
 			$('#footnav img').click(function() {
 				mytype = $(this).attr('data-num')
 				var index = Math.abs(mytype) - 1
-				$('#foot input').hide()
-				$('#foot input').eq(index).show()
+				$('#foot .input-group').hide()
+				$('#foot .input-group').eq(index).show()
 			})
 			//		发送消息、
 			$('#submit').click(function() {
