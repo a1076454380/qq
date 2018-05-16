@@ -61,6 +61,10 @@
 	</body>
 	<script type="text/javascript">
 		$(function() {
+			var us=localStorage.getItem('us')
+			var other=localStorage.getItem('other')
+			$('.us .text').html('我是'+us)
+			$('.other .text').html('我是'+other)
 			// 初始化存储 SDK
 			AV.init({
 				appId: 'R7N9qRELoUVPza9aIAvTMGvz-gzGzoHsz',
@@ -97,11 +101,11 @@
 			})
 			//		发送消息、
 			$('#submit').click(function() {
-				realtime.createIMClient('17321713550').then(function(Jerry) {
+				realtime.createIMClient(''+us+'').then(function(Jerry) {
 					// 创建与Jerry之间的对话
 					return Jerry.createConversation({
-						members: ['15252163775'],
-						name: '17321713550 & 15252163775',
+						members: [''+other+''],
+						name: ''+us+' & '+other+'',
 					});
 				}).then(function(conversation) {
 					if(mytype == -1) {
@@ -204,7 +208,7 @@
 				}).catch(console.error);
 			})
 			// 接收消息
-			realtime.createIMClient('17321713550').then(function(res) {
+			realtime.createIMClient(''+us+'').then(function(res) {
 				res.on('message', function(message, conversation) {
 					if(message.content._lctype == -1) {
 						//					文字

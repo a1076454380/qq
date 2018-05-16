@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	</head>
+	<body>
+		<div id="wrapper" class="list">
+			<div id="head">
+				<span class="add">
+					<img src="img/add.png">
+				</span>
+				<div>好友列表</div>
+				<span class="editor">
+					<img src="img/editor.png">
+				</span>
+			</div>
+			<div id="main">
+				<p>
+					
+				</p>
+				<!--<div class="group" data-id="15252163775">
+					<img src="img/avatar.jpg" class="avatar">
+					<div class="group-text">
+						<div class="name">
+							董小礼
+						</div>
+						<div class="text">
+							吃饭没?
+						</div>
+					</div>
+				</div>-->
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$(function(){
+			console.log(JSON.parse(localStorage.getItem('userdata')))
+			$('.add').click(function(){
+				window.location.href='add.html'
+			})
+		})
+	</script>
+</html>

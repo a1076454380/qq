@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	</head>
+	<body>
+		<div id="wrapper" class="login">
+			<div id="head">
+				<span class="add"></span>
+				<div>添加会话</div>
+				<span class="editor"></span>
+			</div>
+			<div id="main">
+				<input type="number" placeholder="请输入对方的纯数字ID，推荐使用手机号！" required=""/>
+				<div class="submit">
+					发起会话
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('.submit').click(function(){
+				if($('input').val()!=''){
+					localStorage.setItem('other',$('input').val())
+					window.location.href='index.html'
+				}
+			})
+		})
+	</script>
+</html>

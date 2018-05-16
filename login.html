@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	</head>
+	<body>
+		<div id="wrapper" class="login">
+			<div id="head">
+				<span class="add"></span>
+				<div>登陆</div>
+				<span class="editor"></span>
+			</div>
+			<div id="main">
+				<input type="number" placeholder="请输入您纯数字ID，推荐使用手机号！" required=""/>
+				<div class="submit">
+					登陆
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$(function(){
+			var userdata={
+				userid:'',
+				friend:[]
+			}
+			$('.submit').click(function(){
+				userdata.userid=$('input').val()
+				if($('input').val()!=''){
+					localStorage.setItem('us',$('input').val())
+					localStorage.setItem('userdata',JSON.stringify(userdata))
+					window.location.href='list.html'
+				}
+			})
+		})
+	</script>
+</html>
