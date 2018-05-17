@@ -158,7 +158,21 @@
 				$(this).parent().children('audio')[0].pause()
 				$(this).parent().children('p').html('点击播放')
 			})
+//			获取本地文件名称和大小
 			var mytype = -1
+			$('input[type=file]').change(function(e){
+				var size=e.currentTarget.files[0].size
+				if(size<1024){
+					size='<1KB'
+				}else if(size<1024*1024){
+					size=parseInt(size/1024)+'KB'
+				}else if(size<1024*1024*1024){
+					size=parseInt(size/1024/1024)+'M'
+				}else if(size<1024*1024*1024*1024){
+					size=parseInt(size/1024/1024/1024)+'G'
+				}
+				$(this).parent().children('label').html('名称:'+ e.currentTarget.files[0].name+'大小:'+size)
+			})
 			//		修改消息类型-1文字，-2图片，-6文档,-3音频，-4视频
 			$('#footnav img').click(function() {
 				mytype = $(this).attr('data-num')

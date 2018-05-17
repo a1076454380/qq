@@ -13,7 +13,7 @@
 				<span class="add">
 					<img src="img/add.png">
 				</span>
-				<div>好友列表</div>
+				<div>@董小礼</div>
 				<span class="editor">
 					<img src="img/editor.png">
 				</span>
@@ -30,6 +30,7 @@
 	<script type="text/javascript">
 		$(function(){
 			var userdata=JSON.parse(localStorage.getItem('userdata'))
+			console.log(userdata)
 			if(userdata==null){
 				window.location.href='login.html'
 			}
@@ -53,7 +54,7 @@
 						text='[未知信息]'
 					}
 					$('#group').append(`
-						<div class="group" data-id=""+${userdata.friend[i].id}+"">
+						<div class="group" data-id="${userdata.friend[i].id}">
 							<img src="img/avatar.jpg" class="avatar">
 							<div class="group-text">
 								<div class="name">
@@ -63,7 +64,7 @@
 									${text}
 								</div>
 							</div>
-							<div class="group-text">
+							<div class="group-delete">
 								<img src="img/detelete.png" class="delete">
 							</div>
 						</div>
@@ -74,7 +75,29 @@
 				window.location.href='add.html'
 			})
 			$('.editor').click(function(){
-				
+				if($('.group-delete').css('right')=='0px'){
+					$('.group-delete').css('right','-100%')
+				}else{
+					$('.group-delete').css('right','0')
+				}
+			})
+			$('.group-delete').click(function(){
+				var id=$(this).parent().attr('data-id')
+				for(var i=0;i<userdata.friend.length;i++){
+					console.log(id)
+					if(userdata.friend[i].id==id){
+						console.log(i)
+						userdata.friend.splice(i,1)
+					}
+				}
+				$(this).parent().remove()
+				console.log(userdata)
+				localStorage.setItem('userdata',JSON.stringify(userdata))
+			})
+			$('.group').click(function(){
+				var id=$(this).attr('data-id')
+				localStorage.setItem('other',id)
+				window.location.href='index.html'
 			})
 		})
 	</script>

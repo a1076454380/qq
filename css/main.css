@@ -132,6 +132,9 @@ video{
 	display: flex;
 	align-items: center;
 	border-bottom: 1px solid gainsboro;
+	position: relative;
+	height: 1.1rem;
+	overflow: hidden;
 }
 .list .avatar{
 	width: .7rem;
@@ -165,3 +168,5 @@ video{
     margin: .1rem;color: white;display: block;display: flex;align-items: center;justify-content: center;}
 .text{font-size: .15rem;color: gray;}
 .name{font-size: .25rem;font-weight: 600;}
+.list .group-delete{position: absolute;top: 0;height: 100%;width: .8rem;background: rgb(280,80,60);display: flex;align-items: center;justify-content: center;right: -100%;transition: all .4s;}
+.list .group-delete img{height: .5rem;}
