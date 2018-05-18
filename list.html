@@ -29,8 +29,16 @@
 	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		$(function(){
+			function plusReady(){
+				// 弹出系统等待对话框
+				var w = plus.nativeUI.showWaiting( "获取好友列表..." );
+			}
+			if(window.plus){
+				plusReady();
+			}else{
+				document.addEventListener("plusready",plusReady,false);
+			}
 			var userdata=JSON.parse(localStorage.getItem('userdata'))
-			console.log(userdata)
 			if(userdata==null){
 				window.location.href='login.html'
 			}
@@ -70,6 +78,15 @@
 						</div>
 					`)
 				}
+			}
+			function plusReady(){
+				// 弹出系统等待对话框
+				plus.nativeUI.closeWaiting();
+			}
+			if(window.plus){
+				plusReady();
+			}else{
+				document.addEventListener("plusready",plusReady,false);
 			}
 			$('.add').click(function(){
 				window.location.href='add.html'
